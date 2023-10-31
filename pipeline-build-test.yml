@@ -1,0 +1,47 @@
+name: Angular GitHub CI # 👈
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  ci:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+
+    steps:
+      - uses: actions/checkout@v2
+
+#      - name: Cache node modules
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.npm
+#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node-
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 16.14
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Unit Tests
+        run: npm run test
+
+      - name: Clean Distribution Dirsectory
+        run: npm run ci:clean
+
+      - name: Build Application
+        run: npm run ci:build
+
+      - name: List Files in Distribution Directory
+        run: ls -R ./dist
