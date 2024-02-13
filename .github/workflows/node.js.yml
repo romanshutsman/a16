@@ -1,4 +1,4 @@
-name: Node.js CI
+name: CI CD
 
 on:
   push:
@@ -18,26 +18,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-#  test:
-#    runs-on: ubuntu-latest
-#
-#    strategy:
-#      matrix:
-#        node-version: [ 16.x ]
-#
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#          cache: 'npm'
-#      - run: npm install
-#      - run: npm run ci:test --if-present
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: npm run ci:test --if-present
 
   build:
-#    needs: test  # Wait for the 'test' job to complete successfully
+    needs: test  # Wait for the 'test' job to complete successfully
     runs-on: ubuntu-latest
 
     strategy:
@@ -61,9 +61,6 @@ jobs:
          # Upload entire repository
          path: './dist'
 
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v2
 
   deploy:
       needs: build
@@ -72,31 +69,8 @@ jobs:
         url: ${{ steps.deployment.outputs.page_url }}
       runs-on: ubuntu-latest
       steps:
-
+        - name: Setup Pages
+          uses: actions/configure-pages@v3
         - name: Deploy to GitHub Pages
           id: deployment
           uses: actions/deploy-pages@v2
-
-#  deploy:
-#    needs: build
-#    environment:
-#      name: github-pages
-#      url: ${{ steps.deployment.outputs.page_url }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#      - name: Setup Pages
-#        uses: actions/configure-pages@v3
-#      - name: Upload artifact
-#        uses: actions/upload-pages-artifact@v2
-#        with:
-#          # Upload entire repository
-#          path: '.'
-#      - run: pwd
-#      - run: ls
-#      - run: cat README.md
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v2
-
