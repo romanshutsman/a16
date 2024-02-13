@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
          # Upload entire repository
-         path: '.'
+         path: './dist'
       - run: pwd
       - run: ls
       - run: cat README.md
