@@ -11,7 +11,7 @@
     "deploy": "gh-pages -d dist",
     "ci:clean": "rimraf ./dist",
     "ci:test": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
-    "ci:build": "ng build --prod"
+    "ci:build": "ng build --configuration production --aot"
   },
   "private": true,
   "dependencies": {
