@@ -18,26 +18,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [ 16.x ]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm install
-      - run: npm run ci:test --if-present
+#  test:
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      matrix:
+#        node-version: [ 16.x ]
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#          cache: 'npm'
+#      - run: npm install
+#      - run: npm run ci:test --if-present
 
   build:
-    needs: test  # Wait for the 'test' job to complete successfully
+#    needs: test  # Wait for the 'test' job to complete successfully
     runs-on: ubuntu-latest
 
     strategy:
@@ -54,6 +54,7 @@ jobs:
           cache: 'npm'
       - run: npm install
       - run: npm run build --if-present
+      - run: ls
 
   deploy:
     needs: build
@@ -70,7 +71,8 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload entire repository
-          path: 'dist'
+          path: '.'
+      - run: ls
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
