@@ -54,6 +54,7 @@ jobs:
           cache: 'npm'
       - run: npm install
       - run: npm run build --if-present
+      - run: pwd
       - run: ls
       - run: cat README.md
 
@@ -73,6 +74,7 @@ jobs:
         with:
           # Upload entire repository
           path: '.'
+      - run: pwd
       - run: ls
       - run: cat README.md
       - name: Deploy to GitHub Pages
